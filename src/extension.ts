@@ -1,27 +1,34 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { CfnHoverProvider, CfnCompletionItemProvider, CfnSignatureHelpProvider } from '.';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const CFN_SELECTOR: vscode.DocumentFilter = { language: 'yaml' };
+let diagnosticCollection: vscode.DiagnosticCollection;
+
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "vscode-aws-cfn" is now active!');
+    diagnosticCollection = vscode.languages.createDiagnosticCollection('yaml');
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
+    // todo: pull from settings
+    const triggerProviders: string[] = ['::', '!', '$'];
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
-    });
+    context.subscriptions.push(
+        vscode.languages.registerHoverProvider(CFN_SELECTOR, new CfnHoverProvider()),
+        vscode.languages.registerCompletionItemProvider(CFN_SELECTOR, new CfnCompletionItemProvider(), ...triggerProviders),
+        vscode.languages.registerSignatureHelpProvider(CFN_SELECTOR, new CfnSignatureHelpProvider()),
+        vscode.workspace.onDidChangeTextDocument(documentChanged),
+        diagnosticCollection
+    );
 
-    context.subscriptions.push(disposable);
+    // future wishes
+    // Go To Definition: https://code.visualstudio.com/docs/extensionAPI/language-support#_show-definitions-of-a-symbol
+    // Find all References: https://code.visualstudio.com/docs/extensionAPI/language-support#_show-definitions-of-a-symbol
+    // rename: https://code.visualstudio.com/docs/extensionAPI/language-support#_rename-symbols
+    // correct actions: https://code.visualstudio.com/docs/extensionAPI/language-support#_possible-actions-on-errors-or-warnings
+}
+
+function documentChanged(event: vscode.TextDocumentChangeEvent) {
 }
 
 // this method is called when your extension is deactivated
