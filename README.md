@@ -1,6 +1,6 @@
-# vscode-aws-cfn README
+# vscode-aws-cf README
 
-This is the README for your extension "vscode-aws-cfn". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "vscode-aws-cf". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
