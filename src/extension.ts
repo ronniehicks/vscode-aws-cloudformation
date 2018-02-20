@@ -11,12 +11,12 @@ export function activate(context: vscode.ExtensionContext) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('yaml');
 
     // todo: pull from settings
-    const triggerProviders: string[] = ['::', '!', '$'];
+    const triggerCharacters: string[] = ['!', '$'];
 
     context.subscriptions.push(
         vscode.languages.registerHoverProvider(CFN_SELECTOR, new CfnHoverProvider()),
-        vscode.languages.registerCompletionItemProvider(CFN_SELECTOR, new CfnCompletionItemProvider(), ...triggerProviders),
-        vscode.languages.registerSignatureHelpProvider(CFN_SELECTOR, new CfnSignatureHelpProvider()),
+        vscode.languages.registerCompletionItemProvider(CFN_SELECTOR, new CfnCompletionItemProvider(), ...triggerCharacters),
+        vscode.languages.registerSignatureHelpProvider(CFN_SELECTOR, new CfnSignatureHelpProvider(), ...triggerCharacters),
         vscode.workspace.onDidChangeTextDocument(documentChanged),
         diagnosticCollection
     );
