@@ -5,6 +5,7 @@ import { MatchKind } from ".";
 export class Utils {
     static cfProperty = new RegExp('\\bAWS::\\w+::\\w+\\.\\w+\\b');
     static cfResource = new RegExp('\\bAWS::\\w+::\\w+\\b');
+    static cfPsuedoParameter = new RegExp('\\bAWS::\\w+\\b');
     static cfLongFunction = new RegExp('\\bFn::\\w+\\b');
     static cfShortFunction = new RegExp('!\\w+\\b');
 
@@ -13,6 +14,9 @@ export class Utils {
         let range = document.getWordRangeAtPosition(position, this.cfProperty);
         if (!range) {
             [range, type] = [range || document.getWordRangeAtPosition(position, this.cfResource), MatchKind.Resource];
+        }
+        if (!range) {
+            [range, type] = [range || document.getWordRangeAtPosition(position, this.cfPsuedoParameter), MatchKind.PsuedoParameter];
         }
         if (!range) {
             [range, type] = [range || document.getWordRangeAtPosition(position, this.cfLongFunction), MatchKind.LongFunction];
