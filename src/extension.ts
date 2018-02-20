@@ -1,13 +1,19 @@
 'use strict';
 import * as vscode from 'vscode';
-import { CfnHoverProvider, CfnCompletionItemProvider, CfnSignatureHelpProvider } from '.';
+import * as fs from 'fs';
+
+import { CfnHoverProvider, CfnCompletionItemProvider, CfnSignatureHelpProvider, Utils } from '.';
 
 const CFN_SELECTOR: vscode.DocumentFilter = { language: 'yaml' };
 let diagnosticCollection: vscode.DiagnosticCollection;
 
 export function activate(context: vscode.ExtensionContext) {
 
-    console.log('Congratulations, your extension "vscode-aws-cfn" is now active!');
+    fs.readFile(Utils.resourceFile, 'utf8', (err, data) => {
+        if (err) { throw err; }
+        Utils.resourceObject = JSON.parse(data);
+    });
+
     diagnosticCollection = vscode.languages.createDiagnosticCollection('yaml');
 
     // todo: pull from settings
@@ -20,6 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.workspace.onDidChangeTextDocument(documentChanged),
         diagnosticCollection
     );
+    console.log('Congratulations, your extension "vscode-aws-cfn" is now active!');
 
     // future wishes
     // Go To Definition: https://code.visualstudio.com/docs/extensionAPI/language-support#_show-definitions-of-a-symbol

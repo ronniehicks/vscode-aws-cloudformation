@@ -3,6 +3,10 @@ import { TextDocument, Position } from "vscode";
 import { MatchKind } from ".";
 
 export class Utils {
+    static resourceFile = 'C:\\src\\ronniehicks.github.com\\vscode-aws-cfn\\src\\resources\\us-west-2\\CloudFormationResourceSpecification.json';
+
+    static resourceObject: any;
+
     static cfProperty = new RegExp('\\bAWS::\\w+::\\w+\\.\\w+\\b');
     static cfResource = new RegExp('\\bAWS::\\w+::\\w+\\b');
     static cfPsuedoParameter = new RegExp('\\bAWS::\\w+\\b');

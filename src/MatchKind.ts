@@ -1,8 +1,8 @@
 export enum MatchKind {
-    Property,
-    Resource,
-    PsuedoParameter,
-    LongFunction,
-    ShortFunction,
-    Other
+    Property = 'Property',
+    Resource = 'Resource',
+    PsuedoParameter = 'Psuedo Parameter',
+    LongFunction = 'Long Function',
+    ShortFunction = 'Short Function',
+    Other = 'Other'
 }
